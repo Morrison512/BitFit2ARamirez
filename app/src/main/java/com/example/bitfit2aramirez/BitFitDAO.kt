@@ -10,6 +10,12 @@ interface BitFitDAO {
     @Query("SELECT * FROM bitfit_table")
     fun getAll(): Flow<List<BitFitEntity>>
 
+    @Query("SELECT AVG(hoursSlept) as averageMood FROM bitfit_table")
+    fun averageSleep(): Int
+
+    @Query("SELECT COUNT(hoursSlept) FROM bitfit_table")
+    fun getRowCount(): Int
+
     @Insert
     fun insert(bitFit: BitFitEntity)
 

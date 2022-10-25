@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.Button
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.lifecycle.lifecycleScope
@@ -24,32 +25,20 @@ private const val TAG = "BitFitFragment/"
 
 class BitFitFragment : Fragment() {
     private val bitfits = mutableListOf<BitFit>()
-    lateinit var newB: Button
     lateinit var bitFitRV: RecyclerView
+    lateinit var bitfitAdapter: BitFitAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(layout.bitfit_fragment, container, false)
-        val recyclerView = view.findViewById<View>(R.id.bitFitRV) as RecyclerView
-        val context = view.context
-        bitFitRV.layoutManager = LinearLayoutManager(context)
-        updateAdapter(recyclerView)
-        return view
-    }
-
-    private fun updateAdapter(recyclerView: RecyclerView) {
-        val bitfitAdapter = BitFitAdapter(this, bitfits)
-        bitFitRV.adapter = bitfitAdapter
-
-        newB = findViewById(R.id.newButton)
-        newB.setOnClickListener {
-            val intent = Intent(this, DetailActivity::class.java)
-            this.startActivity(intent)
-        }
+        val view = inflater.inflate(R.layout.bitfit_fragment, container, false)
         lifecycleScope.launch {
-            (application as BitFItApplication).db.articleDao().getAll().collect { databaseList ->
+            (activity?.application as BitFItApplication).db.articleDao().getAll().collect { databaseList ->
                 databaseList.map { entity ->
                     BitFit(
                         entity.dayText,
@@ -62,19 +51,17 @@ class BitFitFragment : Fragment() {
                 }
             }
         }
-
-        val bitFit = intent.getSerializableExtra("EXTRA_ENTRY") as BitFit?
-
-        if(bitFit != null) {
-            Log.d(TAG, "got extra")
-            lifecycleScope.launch(Dispatchers.IO) {
-                (application as BitFItApplication).db.articleDao().insert(
-                    BitFitEntity(
-                        dayText = bitFit.dayText,
-                        hoursSlept = bitFit.hoursSlept
-                    )
-                )
+        val layoutManager = LinearLayoutManager(context)
+        bitFitRV = view.findViewById(R.id.bitFitRV)
+        bitFitRV.layoutManager = layoutManager
+        bitfitAdapter = BitFitAdapter(view.context, bitfits)
+        val newB = view.findViewById<Button>(R.id.newButton)
+        newB.setOnClickListener {
+            activity?.let {
+                val intent = Intent (it, DetailActivity::class.java)
+                it.startActivity(intent)
             }
         }
+        return view
     }
 }
