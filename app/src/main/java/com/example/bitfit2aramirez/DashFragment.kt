@@ -39,13 +39,6 @@ class DashFragment : Fragment() {
             dayCount.text = c.toString()
             avgSleep.text = a.toString()
         }
-        val newB = view.findViewById<Button>(R.id.newButton2)
-        newB.setOnClickListener {
-            activity?.let {
-                val intent = Intent (it, DetailActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
         return view
     }
 

@@ -37,6 +37,10 @@ class BitFitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.bitfit_fragment, container, false)
+        val layoutManager = LinearLayoutManager(view.context)
+        bitFitRV = view.findViewById(R.id.bitFitRV)
+        bitFitRV.layoutManager = layoutManager
+        bitfitAdapter = BitFitAdapter(view.context, bitfits)
         lifecycleScope.launch {
             (activity?.application as BitFItApplication).db.articleDao().getAll().collect { databaseList ->
                 databaseList.map { entity ->
@@ -45,21 +49,11 @@ class BitFitFragment : Fragment() {
                         entity.hoursSlept,
                     )
                 }.also { mappedList ->
+                    Log.i("found", mappedList.size.toString())
                     bitfits.clear()
                     bitfits.addAll(mappedList)
                     bitfitAdapter.notifyDataSetChanged()
                 }
-            }
-        }
-        val layoutManager = LinearLayoutManager(context)
-        bitFitRV = view.findViewById(R.id.bitFitRV)
-        bitFitRV.layoutManager = layoutManager
-        bitfitAdapter = BitFitAdapter(view.context, bitfits)
-        val newB = view.findViewById<Button>(R.id.newButton)
-        newB.setOnClickListener {
-            activity?.let {
-                val intent = Intent (it, DetailActivity::class.java)
-                it.startActivity(intent)
             }
         }
         return view

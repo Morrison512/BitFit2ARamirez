@@ -28,7 +28,8 @@ class DetailActivity : AppCompatActivity() {
             if(dayInput.text.isNotEmpty() && sleepInput.text.isNotEmpty()){
                 val intent = Intent(this, MainActivity::class.java)
                 Log.d("DTAILACT", dayInput.text.toString());
-                val day = BitFit(dayInput.text.toString(), sleepInput.text.toString())
+                val s = sleepInput.text.toString()
+                val day = BitFit(dayInput.text.toString(), s.toInt())
                 intent.putExtra(EXTRA_ENTRY, day)
                 this.startActivity(intent)
             }

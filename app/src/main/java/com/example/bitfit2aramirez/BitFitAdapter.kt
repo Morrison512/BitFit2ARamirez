@@ -40,7 +40,7 @@ class BitFitAdapter(private val context: Context,private val BitLists: List<BitF
         val bitList = BitLists[position]
 
         holder.dayTV.text = bitList.dayText
-        holder.sleepTV.text = bitList.hoursSlept
+        holder.sleepTV.text = bitList.hoursSlept.toString()
     }
     override fun getItemCount() = BitLists.size
 }
