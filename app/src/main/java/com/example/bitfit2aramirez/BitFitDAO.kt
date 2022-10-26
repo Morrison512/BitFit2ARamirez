@@ -13,7 +13,7 @@ interface BitFitDAO {
     @Query("SELECT AVG(hoursSlept) as averageMood FROM bitfit_table")
     fun averageSleep(): Int
 
-    @Query("SELECT COUNT(hoursSlept) FROM bitfit_table")
+    @Query("SELECT COUNT(*) FROM bitfit_table")
     fun getRowCount(): Int
 
     @Insert

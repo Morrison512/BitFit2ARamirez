@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                 }
+                intent.removeExtra("EXTRA_ENTRY")
             }
             true
         }
@@ -67,13 +68,13 @@ class MainActivity : AppCompatActivity() {
                 (application as BitFItApplication).db.articleDao().deleteAll()
             }
         }
-        bottomNavigationView.selectedItemId = R.id.nav_dashboard
+        bottomNavigationView.selectedItemId = R.id.nav_home
     }
 
-    private fun replaceFragment(articleListFragment: Fragment) {
+    private fun replaceFragment(dashFragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.bitfit_frame_layout, articleListFragment)
+        fragmentTransaction.replace(R.id.bitfit_frame_layout, dashFragment)
         fragmentTransaction.commit()
     }
 }

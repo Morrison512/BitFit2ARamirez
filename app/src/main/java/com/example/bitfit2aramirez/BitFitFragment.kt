@@ -41,6 +41,7 @@ class BitFitFragment : Fragment() {
         bitFitRV = view.findViewById(R.id.bitFitRV)
         bitFitRV.layoutManager = layoutManager
         bitfitAdapter = BitFitAdapter(view.context, bitfits)
+        bitFitRV.adapter = bitfitAdapter
         lifecycleScope.launch {
             (activity?.application as BitFItApplication).db.articleDao().getAll().collect { databaseList ->
                 databaseList.map { entity ->
